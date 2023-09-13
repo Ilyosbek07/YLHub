@@ -50,6 +50,9 @@ CUSTOM_APPS = [
     "apps.common",
     "apps.course",
     "apps.users",
+    "apps.happenings",
+    "apps.library",
+    "apps.webinar"
 ]
 
 THIRD_PARTY_APPS = [
