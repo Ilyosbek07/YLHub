@@ -6,19 +6,16 @@ from django.contrib.auth.models import UserManager as AbstractUserManager, Abstr
 from apps.common.models import BaseModel
 
 class UserManager(AbstractUserManager):
-    def _create_user(self, phone_number, password, **extra_fields):
+    def _create_user(self, password, **extra_fields):
         """
         Create and save a user with the given phone_number and password.
         """
-        if not phone_number:
-            raise ValueError("The given phone number must be set")
-
-        user = self.model(phone_number=phone_number, **extra_fields)
+        user = self.model(**extra_fields)
         user.password = make_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, phone_number, password=None, **extra_fields):
+    def create_superuser(self,password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
@@ -27,20 +24,15 @@ class UserManager(AbstractUserManager):
             raise ValueError("Superuser must have is_staff=True.")
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
-        return self._create_user(phone_number, password, **extra_fields)
+        return self._create_user(password, **extra_fields)
 
-    def create_user(self, phone_number, password=None, **extra_fields):
+    def create_user(self, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
-        return self._create_user(phone_number, password, **extra_fields)
+        return self._create_user(password, **extra_fields)
 
 
 class User(AbstractUser, BaseModel):
-    phone_number = models.CharField(
-        verbose_name=_("Phone number"),
-        max_length=16,
-        unique=True,
-    )
     email = models.EmailField(verbose_name=_("Email"), null=True, blank=True)
 
     """
@@ -75,14 +67,7 @@ class User(AbstractUser, BaseModel):
         verbose_name_plural = _("Users")
 
     def __str__(self):
-        return self.phone_number
-
-    def save(self, *args, **kwargs):
-        if self.phone_number:
-            user = User.objects.filter(phone_number=self.phone_number).first()
-            if user and user.id != self.id:
-                raise ValidationError(_("User with this phone number already exists."))
-        super().save(*args, **kwargs)
+        return self.username
 
 
 class Profile(BaseModel):

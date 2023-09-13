@@ -38,6 +38,7 @@ class UserCourse(BaseModel):
                                 on_delete=models.CASCADE)
     course = models.ForeignKey(Course, related_name='user_course', verbose_name=_('Course'), on_delete=models.CASCADE)
     start_time = models.DateField(auto_now_add=True)
+    end_time = models.DateField(auto_now_add=True)
     is_finish = models.BooleanField(default=False)
 
     class Meta:
@@ -54,3 +55,14 @@ class CourseCertificate(BaseModel):
     class Meta:
         verbose_name = _('Course Certificate')
         verbose_name_plural = _('Course Certificates')
+
+
+class CourseReview(BaseModel):
+    user_course = models.ForeignKey(
+        UserCourse,
+        related_name='review',
+        on_delete=models.CASCADE,
+        verbose_name=_('User Course')
+    )
+    comment = models.TextField(verbose_name=_('Comment'))
+    rating = models.PositiveIntegerField(validators=[], verbose_name=_("Rating"))

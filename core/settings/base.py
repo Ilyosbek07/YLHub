@@ -56,6 +56,8 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "drf_yasg",
     "corsheaders",
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 REST_FRAMEWORK = {
@@ -179,4 +181,16 @@ CELERY_TIMEZONE = "Asia/Tashkent"
 
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
 AUTH_USER_MODEL = "users.User"
+
+CKEDITOR_UPLOAD_PATH = "uploads"
+CKEDITOR_THUMBNAIL_SIZE = (300, 300)
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_IMAGE_QUALITY = 40
+CKEDITOR_BROWSE_SHOW_DIRS = True
+CKEDITOR_ALLOW_NONIMAGE_FILES = True
+CKEDITOR_FORCE_JPEG_COMPRESSION = True
+
+
+
