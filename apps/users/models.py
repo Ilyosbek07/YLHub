@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext as _
 from django.contrib.auth.models import UserManager as AbstractUserManager, AbstractUser, Permission, Group
-from apps.common.models import BaseModel
+from apps.course.models import BaseModel
 
 
 class UserManager(AbstractUserManager):
