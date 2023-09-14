@@ -61,6 +61,8 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "ckeditor",
     "ckeditor_uploader",
+    'django_filters',
+
 ]
 
 REST_FRAMEWORK = {

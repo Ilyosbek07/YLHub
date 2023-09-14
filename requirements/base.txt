@@ -8,3 +8,4 @@ djangorestframework
 django-filter
 django-ckeditor
 Pillow
+django-filter

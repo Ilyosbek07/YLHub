@@ -23,7 +23,7 @@ class Course(BaseModel):
     desc = models.TextField(verbose_name=_('Description'))
     duration_time = models.IntegerField(verbose_name=_('Duration Time'))
     score = models.IntegerField(verbose_name=_('Score'))
-    main_image = models.ImageField(verbose_name=_('Image'))
+    main_image = models.ImageField(verbose_name=_('Main Image'))
 
     class Meta:
         verbose_name = _('Course')

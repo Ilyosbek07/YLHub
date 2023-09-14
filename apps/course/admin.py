@@ -1,6 +1,6 @@
 from django.contrib import admin
 from apps.course.models.cource import Category, Course, UserCourse, CourseCertificate, CourseReview
-from apps.course.models.lesson import Lesson, LessonMedia, LessonProgress
+from apps.course.models.lesson import Lesson, LessonContent, LessonView
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -45,7 +45,7 @@ admin.site.register(CourseReview, CourseReviewAdmin)
 
 
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ['course', 'title', 'type', 'order', 'points']
+    list_display = ['course', 'title', 'type', 'order']
     list_filter = ['course', 'type']
     search_fields = ['title']
 
@@ -53,19 +53,19 @@ class LessonAdmin(admin.ModelAdmin):
 admin.site.register(Lesson, LessonAdmin)
 
 
-class LessonMediaAdmin(admin.ModelAdmin):
+class LessonContentAdmin(admin.ModelAdmin):
     list_display = ['lesson', 'title', 'order']
     list_filter = ['lesson']
     search_fields = ['title']
 
 
-admin.site.register(LessonMedia, LessonMediaAdmin)
+admin.site.register(LessonContent, LessonContentAdmin)
 
 
-class LessonProgressAdmin(admin.ModelAdmin):
+class LessonViewAdmin(admin.ModelAdmin):
     list_display = ['profile', 'lesson', 'is_finish']
     list_filter = ['is_finish', 'lesson__course']
     search_fields = ['profile__user__username', 'lesson__title']
 
 
-admin.site.register(LessonProgress, LessonProgressAdmin)
+admin.site.register(LessonView, LessonViewAdmin)
