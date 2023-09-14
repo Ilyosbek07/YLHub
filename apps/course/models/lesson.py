@@ -53,71 +53,10 @@ class LessonProgress(BaseModel):
     is_finish = models.BooleanField(default=False, verbose_name=_("Is Finish"))
 
     class Meta:
+        unique_together = ['profile', 'lesson']
         verbose_name = _("Lesson Progress")
         verbose_name_plural = _("Lesson Progress")
 
     def __str__(self):
         return f"Lesson Progress: {self.profile} - {self.lesson}"
 
-#
-# 
-# class Lesson(BaseModel):
-#     name = models.CharField(verbose_name=_("Name"), max_length=255)
-#     course = models.ForeignKey(
-#         verbose_name=_("Course"),
-#         to="Course",
-#         on_delete=models.CASCADE,
-#         related_name="lessons",
-#     )
-#     order = models.PositiveIntegerField(verbose_name=_("Order"), default=0)
-#     is_active = models.BooleanField(verbose_name=_("Is active"), default=True)
-# 
-#     def is_viewed(self, user):
-#         if not user.profile.user_courses.filter(course=self.course).exists():
-#             return
-#         user_viewed_videos_count = VideoView.objects.filter(
-#             profile=user.profile, video_lesson__in=self.video_lessons.all()
-#         ).count()
-#         return self.video_lessons.count() == user_viewed_videos_count
-# 
-#     def __str__(self):
-#         return self.name
-# 
-#     class Meta:
-#         ordering = ["order"]
-# 
-# 
-# class VideoLesson(BaseModel):
-#     name = models.CharField(verbose_name=_("Name"), max_length=255)
-#     lesson = models.ForeignKey(
-#         verbose_name=_("Lesson"),
-#         to="Lesson",
-#         on_delete=models.CASCADE,
-#         related_name="video_lessons",
-#     )
-#     video = models.FileField(verbose_name=_("Video"), upload_to="videos")
-#     order = models.PositiveIntegerField(verbose_name=_("Order"), default=0)
-# 
-#     def __str__(self):
-#         return self.name
-# 
-# 
-# class VideoView(BaseModel):
-#     profile = models.ForeignKey(
-#         verbose_name=_("Profile"),
-#         to="users.Profile",
-#         on_delete=models.CASCADE,
-#         related_name="video_views",
-#     )
-#     video_lesson = models.ForeignKey(
-#         verbose_name=_("Video lesson"),
-#         to="VideoLesson",
-#         on_delete=models.CASCADE,
-#         related_name="video_views",
-#     )
-# 
-#     def __str__(self):
-#         return f"{self.profile.user.phone_number} - {self.video_lesson.name}"
-# 
-#     class Meta:
-#         unique_together = ["profile", "video_lesson"]
