@@ -9,6 +9,7 @@ class Webinar(BaseModel):
     title = models.CharField(_("Title"), max_length=100)
     author = models.CharField(_("Author"), max_length=100)
     about = models.TextField(_("About"), max_length=400)
+    cover_image = models.ImageField(_("Cover image"), upload_to="webinar/covers/", default="webinar_default.png")
     stream_url = models.CharField(_("Stream url"), max_length=200, null=True, blank=True)
     status = models.CharField(
         _("Status"),
