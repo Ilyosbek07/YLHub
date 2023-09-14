@@ -46,10 +46,10 @@ DJANGO_APPS = [
 ]
 
 CUSTOM_APPS = [
-    "apps.cabinet",
     "apps.common",
     "apps.course",
     "apps.users",
+    'apps.tests'
 ]
 
 THIRD_PARTY_APPS = [
@@ -191,6 +191,3 @@ CKEDITOR_IMAGE_QUALITY = 40
 CKEDITOR_BROWSE_SHOW_DIRS = True
 CKEDITOR_ALLOW_NONIMAGE_FILES = True
 CKEDITOR_FORCE_JPEG_COMPRESSION = True
-
-
-

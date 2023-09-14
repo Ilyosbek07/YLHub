@@ -7,6 +7,9 @@ from .schema import swagger_urlpatterns
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('course/', include('apps.course.urls')),
+    path('users/', include('apps.users.urls')),
+
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
