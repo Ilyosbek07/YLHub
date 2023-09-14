@@ -1,5 +1,6 @@
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext as _
 from django.contrib.auth.models import UserManager as AbstractUserManager, AbstractUser, Permission, Group
@@ -106,7 +107,12 @@ class Document(BaseModel):
                                 on_delete=models.CASCADE)
     type = models.CharField(max_length=125, verbose_name=_('Type'))
     name = models.CharField(max_length=125, verbose_name=_('Name'))
-    file = models.FileField(upload_to='media/documents', verbose_name=_('Document'))
+    certificate = models.FileField(
+        upload_to='document/',
+        validators=[FileExtensionValidator(
+            allowed_extensions=['txt', 'csv', 'doc','doc'])],
+        verbose_name=_('Certificate')
+    )
 
     class Meta:
         verbose_name = _('Document')

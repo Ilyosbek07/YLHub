@@ -52,7 +52,7 @@ CUSTOM_APPS = [
     "apps.happenings",
     "apps.library",
     "apps.webinar",
-    'apps.tests'
+    "apps.tests",
 ]
 
 THIRD_PARTY_APPS = [
@@ -61,8 +61,7 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "ckeditor",
     "ckeditor_uploader",
-    'django_filters',
-
+    "django_filters",
 ]
 
 REST_FRAMEWORK = {

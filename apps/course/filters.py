@@ -7,6 +7,6 @@ class CourseFilter(django_filters.FilterSet):
     class Meta:
         model = Course
         fields = {
-            'category__name',
-            'category__is_optional',
+            "category__name",
+            "category__is_optional",
         }

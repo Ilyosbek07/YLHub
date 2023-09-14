@@ -7,8 +7,8 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = (
-           'title',
-           'description',
-           'type',
-           'order',
+            "title",
+            "description",
+            "type",
+            "order",
         )

@@ -16,15 +16,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = (
-            "id",
-            "category",
-            "title",
-            "desc",
-            "duration_time",
-            "score",
-            "main_image"
-        )
+        fields = ("id", "category", "title", "desc", "duration_time", "score", "main_image")
 
 
 class CourseRetrieveSerializer(serializers.ModelSerializer):
@@ -33,16 +25,7 @@ class CourseRetrieveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = (
-            "id",
-            "title",
-            "desc",
-            "duration_time",
-            "score",
-            "main_image",
-            'course_lesson',
-            'lessons_count'
-        )
+        fields = ("id", "title", "desc", "duration_time", "score", "main_image", "course_lesson", "lessons_count")
 
     def get_lessons_count(self, obj):
         lessons = Lesson.objects.filter(course=obj.pk)

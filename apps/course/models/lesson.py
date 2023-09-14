@@ -1,9 +1,9 @@
 from ckeditor_uploader.fields import RichTextUploadingField
-
-from apps.common.models import BaseModel
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext as _
 
+from apps.common.models import BaseModel
 from apps.course.models.cource import Course
 from apps.users.models import Profile
 
@@ -17,7 +17,7 @@ class LessonTypeChoices(models.TextChoices):
 
 
 class Lesson(BaseModel):
-    course = models.ForeignKey(Course,related_name='course_lesson', on_delete=models.CASCADE, verbose_name=_("Course"))
+    course = models.ForeignKey(Course, related_name="course_lesson", on_delete=models.CASCADE, verbose_name=_("Course"))
     title = models.CharField(max_length=125, verbose_name=_("Title"))
     description = models.TextField(verbose_name=_("Description"))
     type = models.CharField(max_length=55, choices=LessonTypeChoices.choices, verbose_name=_("Type"))
@@ -34,8 +34,13 @@ class Lesson(BaseModel):
 class LessonContent(BaseModel):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name=_("Lesson"))
     title = models.CharField(max_length=125, verbose_name=_("Title"))
-    file = models.FileField(upload_to="media/", verbose_name=_("File"))
-    content = RichTextUploadingField(verbose_name='Content', null=True, blank=True)
+    file = models.FileField(
+        upload_to='certificate/',
+        validators=[FileExtensionValidator(
+            allowed_extensions=['mp3', 'wav', 'ogg', 'mp4', 'avi', 'mov'])],
+        verbose_name=_('Certificate')
+    )
+    content = RichTextUploadingField(verbose_name="Content", null=True, blank=True)
     order = models.IntegerField(verbose_name=_("Order"))
 
     class Meta:
@@ -52,7 +57,7 @@ class LessonView(BaseModel):
     is_finish = models.BooleanField(default=False, verbose_name=_("Is Finish"))
 
     class Meta:
-        unique_together = ['profile', 'lesson']
+        unique_together = ["profile", "lesson"]
         verbose_name = _("Lesson View")
         verbose_name_plural = _("Lesson Views")
 

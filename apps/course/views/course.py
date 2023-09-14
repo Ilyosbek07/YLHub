@@ -3,7 +3,8 @@ from rest_framework import generics
 
 from apps.course.filters import CourseFilter
 from apps.course.models import Course
-from apps.course.serializers.course import CourseSerializer, CourseRetrieveSerializer
+from apps.course.serializers.course import (CourseRetrieveSerializer,
+                                            CourseSerializer)
 
 
 class CourseListAPIView(generics.ListAPIView):
