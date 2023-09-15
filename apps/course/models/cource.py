@@ -73,3 +73,7 @@ class CourseReview(BaseModel):
     )
     comment = models.TextField(verbose_name=_("Comment"))
     rating = models.PositiveIntegerField(validators=[], verbose_name=_("Rating"))
+
+    class Meta:
+        verbose_name = _("Course Review")
+        verbose_name_plural = _("Course Reviews")
