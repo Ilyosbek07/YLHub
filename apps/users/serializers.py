@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from apps.users.models import Profile, User
+from apps.users.models import Profile, User, Document, SocialMedia
 
 
 class RegisterUserSerializer(serializers.ModelSerializer):
@@ -25,10 +25,33 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         return data
 
 
+class DocumentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Document
+        fields = (
+            'profile',
+            'type',
+            'name',
+            'certificate',
+        )
+
+
+class SocialMediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SocialMedia
+        fields = (
+            'profile',
+            'link',
+        )
+
+
 class ProfileSerializer(serializers.ModelSerializer):
+    profile_documents = DocumentSerializer(many=True)
+
     class Meta:
         model = Profile
         fields = (
+            'id',
             "user",
             "full_name",
             "position",
@@ -39,4 +62,5 @@ class ProfileSerializer(serializers.ModelSerializer):
             "degree",
             "birth_date",
             "score",
+            "profile_documents",
         )

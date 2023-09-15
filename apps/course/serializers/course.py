@@ -49,8 +49,13 @@ class UserCourseSerializer(serializers.ModelSerializer):
         model = UserCourse
         fields = (
             'user',
+            'course',
             'start_time',
             'end_time',
             'is_finish',
-            'course',
         )
+        extra_kwargs = {
+            "start_time": {"read_only": True},
+            "end_time": {"read_only": True},
+            "is_finish": {"read_only": True},
+        }
