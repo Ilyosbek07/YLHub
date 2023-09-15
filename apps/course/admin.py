@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from apps.course.models.cource import (Category, Course, CourseCertificate,
-                                       CourseReview, UserCourse)
+from apps.course.models.cource import Category, Course, CourseCertificate, CourseReview, UserCourse
 from apps.course.models.lesson import Lesson, LessonContent, LessonView
 
 
@@ -22,9 +21,9 @@ admin.site.register(Course, CourseAdmin)
 
 
 class UserCourseAdmin(admin.ModelAdmin):
-    list_display = ["profile", "course", "start_time", "end_time", "is_finish"]
+    list_display = ["user", "course", "start_time", "end_time", "is_finish"]
     list_filter = ["is_finish", "course"]
-    search_fields = ["profile__user__username", "course__title"]
+    search_fields = ["user__username", "course__title"]
 
 
 admin.site.register(UserCourse, UserCourseAdmin)

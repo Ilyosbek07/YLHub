@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import gettext as _
 
 from apps.common.models import BaseModel
-from apps.users.models import Profile
+from apps.users.models import Profile, User
 
 
 class Category(BaseModel):
@@ -37,8 +37,8 @@ class Course(BaseModel):
 
 
 class UserCourse(BaseModel):
-    profile = models.ForeignKey(
-        Profile, related_name="profile_user_course", verbose_name=_("Profile"), on_delete=models.CASCADE
+    user = models.ForeignKey(
+        User, related_name="profile_user_course", verbose_name=_("User"), on_delete=models.CASCADE
     )
     course = models.ForeignKey(Course, related_name="user_course", verbose_name=_("Course"), on_delete=models.CASCADE)
     start_time = models.DateField(auto_now_add=True)
@@ -46,7 +46,7 @@ class UserCourse(BaseModel):
     is_finish = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = ["profile", "course"]
+        unique_together = ["user", "course"]
         verbose_name = _("User Course")
         verbose_name_plural = _("User Courses")
 
@@ -56,10 +56,9 @@ class CourseCertificate(BaseModel):
         UserCourse, related_name="user_certificate", verbose_name=_("User Course"), on_delete=models.CASCADE
     )
     certificate = models.FileField(
-        upload_to='certificate/',
-        validators=[FileExtensionValidator(
-            allowed_extensions=['txt', 'csv', 'html', 'jpg', 'jpeg', 'png'])],
-        verbose_name=_('Certificate')
+        upload_to="certificate/",
+        validators=[FileExtensionValidator(allowed_extensions=["txt", "csv", "html", "jpg", "jpeg", "png"])],
+        verbose_name=_("Certificate"),
     )
 
     class Meta:

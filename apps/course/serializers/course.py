@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.course.models import Category, Course, Lesson
+from apps.course.models import Category, Course, Lesson, UserCourse
 from apps.course.serializers.lesson import LessonSerializer
 
 
@@ -30,3 +30,16 @@ class CourseRetrieveSerializer(serializers.ModelSerializer):
     def get_lessons_count(self, obj):
         lessons = Lesson.objects.filter(course=obj.pk)
         return len(lessons)
+
+
+class UserCourseSerializer(serializers.ModelSerializer):
+    course = CourseSerializer()
+    class Meta:
+        model = UserCourse
+        fields = (
+            'user',
+            'start_time',
+            'end_time',
+            'is_finish',
+            'course',
+        )

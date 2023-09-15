@@ -27,5 +27,4 @@ class ProfileTestCase(APITestCase):
         self.client.force_login(self.profile.user)
         response = self.client.get(reverse('profile_detail', kwargs={"pk": self.profile.id}))
         self.assertEqual(response.status_code, 200)
-        print(response.data)
         self.assertEqual(response.data["full_name"], 'test')

@@ -18,25 +18,25 @@ class QuestionInline(admin.TabularInline):
 
 
 class TestAdmin(admin.ModelAdmin):
-    list_display = ('title', 'course', 'duration_time', 'order', 'is_resubmit')
+    list_display = ("title", "course", "duration_time", "order", "is_resubmit")
     inlines = [QuestionInline]
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('test', 'type', 'name', 'order')
+    list_display = ("test", "type", "name", "order")
     inlines = [VariantInline]
 
 
 class UserTestAdmin(admin.ModelAdmin):
-    list_display = ('user', 'test', 'start_time', 'end_time', 'is_finish')
+    list_display = ("user", "test", "start_time", "end_time", "is_finish")
 
 
 class VariantAdmin(admin.ModelAdmin):
-    list_display = ('name', 'order', 'is_answer')
+    list_display = ("name", "order", "is_answer")
 
 
 class QuestionContentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'question')
+    list_display = ("id", "question")
 
 
 admin.site.register(Test, TestAdmin)

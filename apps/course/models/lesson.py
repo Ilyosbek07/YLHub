@@ -35,10 +35,9 @@ class LessonContent(BaseModel):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name=_("Lesson"))
     title = models.CharField(max_length=125, verbose_name=_("Title"))
     file = models.FileField(
-        upload_to='certificate/',
-        validators=[FileExtensionValidator(
-            allowed_extensions=['mp3', 'wav', 'ogg', 'mp4', 'avi', 'mov'])],
-        verbose_name=_('Certificate')
+        upload_to="certificate/",
+        validators=[FileExtensionValidator(allowed_extensions=["mp3", "wav", "ogg", "mp4", "avi", "mov"])],
+        verbose_name=_("Certificate"),
     )
     content = RichTextUploadingField(verbose_name="Content", null=True, blank=True)
     order = models.IntegerField(verbose_name=_("Order"))

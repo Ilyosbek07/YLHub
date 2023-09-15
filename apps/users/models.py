@@ -6,6 +6,7 @@ from django.utils.translation import gettext as _
 from django.contrib.auth.models import UserManager as AbstractUserManager, AbstractUser, Permission, Group
 from apps.common.models import BaseModel
 
+
 class UserManager(AbstractUserManager):
     def _create_user(self, password, **extra_fields):
         """
@@ -16,7 +17,7 @@ class UserManager(AbstractUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self,password=None, **extra_fields):
+    def create_superuser(self, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
@@ -51,15 +52,18 @@ class User(AbstractUser, BaseModel):
     USERNAME_FIELD = "username"
     groups = models.ManyToManyField(
         Group,
-        verbose_name=_('groups'), blank=True,
-        help_text=_('The groups this user belongs to.'), related_name='custom_user_set'
+        verbose_name=_("groups"),
+        blank=True,
+        help_text=_("The groups this user belongs to."),
+        related_name="custom_user_set"
         # Change this to a unique name
     )
     user_permissions = models.ManyToManyField(
         Permission,
-        verbose_name=_('user permissions'), blank=True,
-        help_text=_('Specific permissions for this user.'),
-        related_name='custom_user_set'  # Change this to a unique name
+        verbose_name=_("user permissions"),
+        blank=True,
+        help_text=_("Specific permissions for this user."),
+        related_name="custom_user_set",  # Change this to a unique name
     )
 
     class Meta:
@@ -73,63 +77,64 @@ class User(AbstractUser, BaseModel):
 
 class Profile(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    full_name = models.CharField(max_length=255, verbose_name=_('Full Name'))
-    position = models.CharField(max_length=255, verbose_name=_('Position'))
-    JShShIR = models.CharField(max_length=255, verbose_name=_('JShShIR'))
-    study_center = models.CharField(max_length=255, verbose_name=_('Study Center'))
-    passport_series = models.CharField(max_length=255, verbose_name=_('Passport Series'))
+    full_name = models.CharField(max_length=255, verbose_name=_("Full Name"))
+    position = models.CharField(max_length=255, verbose_name=_("Position"))
+    JShShIR = models.CharField(max_length=255, verbose_name=_("JShShIR"))
+    study_center = models.CharField(max_length=255, verbose_name=_("Study Center"))
+    passport_series = models.CharField(max_length=255, verbose_name=_("Passport Series"))
     NATIONALITY_CHOICES = (
-        ('us', _('United States')),
-        ('uz', _('Uzbek')),
-        ('ru', _('Russian')),
+        ("us", _("United States")),
+        ("uz", _("Uzbek")),
+        ("ru", _("Russian")),
     )
-    nationality = models.CharField(max_length=255, choices=NATIONALITY_CHOICES, verbose_name=_('Nationality'))
+    nationality = models.CharField(max_length=255, choices=NATIONALITY_CHOICES, verbose_name=_("Nationality"))
 
     DEGREE_CHOICES = (
-        ('bsc', _('Bachelor')),
-        ('msc', _('Master')),
-        ('stu', _('Student')),
+        ("bsc", _("Bachelor")),
+        ("msc", _("Master")),
+        ("stu", _("Student")),
     )
-    degree = models.CharField(max_length=55, choices=DEGREE_CHOICES, verbose_name=_('Degree'))
+    degree = models.CharField(max_length=55, choices=DEGREE_CHOICES, verbose_name=_("Degree"))
     birth_date = models.DateField(verbose_name=_("Birth date"), null=True, blank=True)
     score = models.IntegerField(verbose_name=_("Score"))
 
     class Meta:
-        verbose_name = _('Profile')
-        verbose_name_plural = _('Profiles')
+        verbose_name = _("Profile")
+        verbose_name_plural = _("Profiles")
 
     def __str__(self):
         return self.full_name
 
 
 class Document(BaseModel):
-    profile = models.ForeignKey(Profile, related_name='profile_documents', verbose_name=_('Profile'),
-                                on_delete=models.CASCADE)
-    type = models.CharField(max_length=125, verbose_name=_('Type'))
-    name = models.CharField(max_length=125, verbose_name=_('Name'))
+    profile = models.ForeignKey(
+        Profile, related_name="profile_documents", verbose_name=_("Profile"), on_delete=models.CASCADE
+    )
+    type = models.CharField(max_length=125, verbose_name=_("Type"))
+    name = models.CharField(max_length=125, verbose_name=_("Name"))
     certificate = models.FileField(
-        upload_to='document/',
-        validators=[FileExtensionValidator(
-            allowed_extensions=['txt', 'csv', 'doc','doc'])],
-        verbose_name=_('Certificate')
+        upload_to="document/",
+        validators=[FileExtensionValidator(allowed_extensions=["txt", "csv", "doc", "doc"])],
+        verbose_name=_("Certificate"),
     )
 
     class Meta:
-        verbose_name = _('Document')
-        verbose_name_plural = _('Documents')
+        verbose_name = _("Document")
+        verbose_name_plural = _("Documents")
 
     def __str__(self):
         return self.name
 
 
 class SocialMedia(BaseModel):
-    profile = models.ForeignKey(Profile, related_name='profile_social_media', verbose_name=_('Profile'),
-                                on_delete=models.CASCADE)
-    link = models.URLField(verbose_name=_('Link'))
+    profile = models.ForeignKey(
+        Profile, related_name="profile_social_media", verbose_name=_("Profile"), on_delete=models.CASCADE
+    )
+    link = models.URLField(verbose_name=_("Link"))
 
     class Meta:
-        verbose_name = _('Social Media')
-        verbose_name_plural = _('Social Media')
+        verbose_name = _("Social Media")
+        verbose_name_plural = _("Social Media")
 
     def __str__(self):
         return self.link
