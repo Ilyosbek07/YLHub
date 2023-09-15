@@ -8,7 +8,6 @@ from apps.users.models import Profile, User
 
 class Category(BaseModel):
     name = models.CharField(max_length=125, verbose_name=_("Name"))
-    is_optional = models.BooleanField(default=False, verbose_name=_("Is Optional"))
 
     class Meta:
         verbose_name = _("Category")
@@ -24,9 +23,11 @@ class Course(BaseModel):
     )
     title = models.CharField(max_length=125, verbose_name=_("Title"))
     desc = models.TextField(verbose_name=_("Description"))
-    duration_time = models.IntegerField(verbose_name=_("Duration Time"))
+    duration_day = models.IntegerField(verbose_name=_("Duration Day"))
+    expired_date = models.DateField(verbose_name=_("Expired Date"))
     score = models.IntegerField(verbose_name=_("Score"))
     main_image = models.ImageField(verbose_name=_("Main Image"))
+    is_optional = models.BooleanField(default=False, verbose_name=_('Is Optional'))
 
     class Meta:
         verbose_name = _("Course")

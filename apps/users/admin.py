@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.users.models import Profile
+from apps.users.models import Profile, User
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -10,3 +10,4 @@ class ProfileAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(User)

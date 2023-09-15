@@ -8,5 +8,4 @@ class CourseFilter(django_filters.FilterSet):
         model = Course
         fields = {
             "category__name",
-            "category__is_optional",
         }
