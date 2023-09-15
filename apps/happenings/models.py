@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 from django.db import models
 from django.db.models import Sum
 from django.core.exceptions import ValidationError
@@ -106,7 +106,7 @@ class Event(HappeningBaseModel):
         ordering = ["-time"]
 
     def clean(self):
-        if self.time < datetime.now():
+        if self.time < timezone.now():
             raise ValidationError(_("This datetime must be greater than or equal to current time."))
 
     def __str__(self):

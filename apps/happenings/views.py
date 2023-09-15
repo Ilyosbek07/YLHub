@@ -1,6 +1,5 @@
-from datetime import datetime
 from itertools import chain
-
+from django.utils import timezone
 from django.db import models
 from django.db.models import Value
 from django.shortcuts import get_object_or_404
@@ -30,7 +29,7 @@ class MainPageView(ListAPIView):
             )
             .only("id", "updated_at", "title", "slug", "cover_image", "tags")
         )
-        current_time = datetime.now()
+        current_time = timezone.now()
         events = (
             Event.objects.filter(time__gte=current_time)
             .annotate(
@@ -79,7 +78,7 @@ class EventListView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        current_time = datetime.now()
+        current_time = timezone.now()
         return self.queryset.filter(time__gte=current_time)
 
 
@@ -90,7 +89,7 @@ class EventDetailView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        current_time = datetime.now()
+        current_time = timezone.now()
         return self.queryset.filter(time__gte=current_time)
 
 
@@ -116,15 +115,17 @@ class PollDetailView(RetrieveAPIView):
         id = self.kwargs.get("pk")
         choice = UserPoll.objects.filter(choice__poll=id, profile__user=self.request.user)
         if choice.exists():
-            self.selected_id = choice.first()
+            self.selected_id = choice.first().choice.id
             return PollCompletedDetailSerializer
         else:
             return PollUncompletedDetailSerializer
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        context["selected"] = self.selected_id
-        return context
+        try:
+            context["selected"] = self.selected_id
+        finally:
+            return context
 
 
 class PollChoiceSelectedView(APIView):

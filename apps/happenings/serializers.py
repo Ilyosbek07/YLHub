@@ -147,7 +147,7 @@ class PollCompletedDetailSerializer(serializers.ModelSerializer):
         total_votes = obj.get_total_votes()
         choices = choices.annotate(
             is_selected=Case(
-                When(id=selected.id, then=True),
+                When(id=selected, then=True),
                 default=False,
                 output_field=models.BooleanField()
             ),

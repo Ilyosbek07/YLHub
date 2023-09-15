@@ -21,6 +21,10 @@ class PollAdmin(admin.ModelAdmin):
         return obj.get_total_votes()
 
 
+class PollChoiceAdmin(admin.ModelAdmin):
+    readonly_fields = ["votes"]
+
+
 class EventAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["title"]}
 
@@ -28,6 +32,6 @@ class EventAdmin(admin.ModelAdmin):
 admin.site.register(Poll, PollAdmin)
 admin.site.register(News, NewsAdmin)
 admin.site.register(Event, EventAdmin)
-admin.site.register(PollChoice)
+admin.site.register(PollChoice, PollChoiceAdmin)
 admin.site.register(UserPoll)
 admin.site.register(Tag)
