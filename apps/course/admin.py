@@ -5,14 +5,14 @@ from apps.course.models.lesson import Lesson, LessonContent, LessonView
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ["name", "is_optional"]
+    list_display = ["name"]
 
 
 admin.site.register(Category, CategoryAdmin)
 
 
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ["title", "category", "duration_time", "score"]
+    list_display = ["title", "category", "duration_day", "score"]
     list_filter = ["category"]
     search_fields = ["title"]
 

@@ -7,7 +7,7 @@ from apps.course.serializers.lesson import LessonSerializer
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ("name", "is_optional")
+        fields = ("name",)
 
 
 #
@@ -16,7 +16,17 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ("id", "category", "title", "desc", "duration_time", "score", "main_image")
+        fields = (
+            "id",
+            "category",
+            "title",
+            "desc",
+            "duration_day",
+            "expired_date",
+            "score",
+            "main_image",
+            'is_optional',
+        )
 
 
 class CourseRetrieveSerializer(serializers.ModelSerializer):
@@ -25,7 +35,7 @@ class CourseRetrieveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ("id", "title", "desc", "duration_time", "score", "main_image", "course_lesson", "lessons_count")
+        fields = ("id", "title", "desc", "duration_day", "score", "main_image", "course_lesson", "lessons_count")
 
     def get_lessons_count(self, obj):
         lessons = Lesson.objects.filter(course=obj.pk)
@@ -34,6 +44,7 @@ class CourseRetrieveSerializer(serializers.ModelSerializer):
 
 class UserCourseSerializer(serializers.ModelSerializer):
     course = CourseSerializer()
+
     class Meta:
         model = UserCourse
         fields = (
