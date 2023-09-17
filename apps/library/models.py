@@ -1,3 +1,4 @@
+from math import floor
 from django.db import models
 from django.db.models import Sum
 from django.core.exceptions import ValidationError
@@ -83,8 +84,9 @@ class Book(BookBaseModel):
     class Meta:
         verbose_name = _("Book")
         verbose_name_plural = _("Books")
+        ordering = ["-updated_at"]
 
-    def save(self):
+    def save(self, *args, **kwargs):
         try:
             path = self.book_file.file.temporary_file_path()
         except:
@@ -93,7 +95,7 @@ class Book(BookBaseModel):
         if num_pages is None:
             raise ValidationError(_("Invalid file"))
         self.pages = num_pages
-        return super().save()
+        return super().save(*args, **kwargs)
     
     def __str__(self):
         return self.title
@@ -113,12 +115,25 @@ class UserBookProgress(BaseModel):
         related_name="user_progresses",
         verbose_name=_("Book")
     )
+    percentage = models.PositiveSmallIntegerField(_("Percentage"), blank=True, default=0)
+    is_completed = models.BooleanField(_("Is completed"), blank=True, default=False)
     last_page = models.PositiveSmallIntegerField(_("Last page"))
 
     class Meta:
         verbose_name = _("User Book Progress")
         verbose_name_plural = _("User Book Progresses")
         unique_together = ["book", "profile"]
+
+    def save(self, *args, **kwargs):
+        if not self.is_completed:
+            self.percentage = floor(self.last_page / self.book.pages * 100)
+            if self.percentage == 100:
+                self.is_completed = True
+                if self.profile.score is None:
+                    self.profile.score = 0
+                self.profile.score += self.book.bonus_points
+                self.profile.save()
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.book.__str__()} : {self.profile.__str__()}"
@@ -166,6 +181,7 @@ class AudioSection(BaseModel):
         verbose_name = _("Audiobook section")
         verbose_name_plural = _("Audiobook sections")
         unique_together = ["order", "audiobook"]
+        ordering = ["order"]
 
     def __str__(self):
         return self.name
@@ -190,8 +206,9 @@ class AudioUnit(BaseModel):
         verbose_name = _("Audiobook unit")
         verbose_name_plural = _("Audiobook units")
         unique_together = ["order", "section"]
+        ordering = ["order"]
 
-    def save(self):
+    def save(self, *args, **kwargs):
         old = AudioUnit.objects.filter(pk=self.id)
         if old.exists():
             path = self.audio_file.file
@@ -206,7 +223,7 @@ class AudioUnit(BaseModel):
         self.duration = duration
         new_duration += self.duration
         self.update_ancestor_durations(new_duration)
-        return super().save()
+        return super().save(*args, **kwargs)
     
     def delete(self, *args, **kwargs):
         self.update_ancestor_durations(-self.duration)
@@ -246,13 +263,15 @@ class UserAudiobookProgress(BaseModel):
     )
     listened_duration = models.PositiveSmallIntegerField(_("Listened duration"), default=0)
     duration_so_far = models.PositiveIntegerField(_("Total listened duration"), blank=True)
+    percentage = models.PositiveSmallIntegerField(_("Percentage"), blank=True, default=0)
+    is_completed = models.BooleanField(_("Is completed"), blank=True, default=False)
 
     class Meta:
         verbose_name = _("User audiobook progress")
         verbose_name_plural = _("User audiobook progresses")
         unique_together = ["profile", "audiobook"]
 
-    def save(self):
+    def save(self, *args, **kwargs):
         section = self.audio_unit.section
         audiobook = section.audiobook
 
@@ -270,7 +289,16 @@ class UserAudiobookProgress(BaseModel):
         
         self.audiobook = audiobook
         self.duration_so_far = completed_sections_len + section_completed_units_len + self.listened_duration
-        return super().save()
+        
+        if not self.is_completed:
+            self.percentage = floor(self.duration_so_far / self.audiobook.duration * 100)
+            if self.percentage == 100:
+                self.is_completed = True
+                if self.profile.score is None:
+                    self.profile.score = 0
+                self.profile.score += self.audiobook.bonus_points
+                self.profile.save()
+        return super().save(*args, **kwargs)
     
     def __str__(self):
         return f"{self.profile.__str__()} : {self.audio_unit.section.audiobook.__str__()}"

@@ -19,3 +19,13 @@ def get_audio_length(path):
     except:
         return None
     
+def format_seconds(seconds):
+    result = {}
+    result["days"] = seconds // 86400
+    seconds %= 86400
+    result["hours"] = seconds // 3600
+    seconds %= 3600
+    result["minutes"] = seconds // 60
+    seconds %= 60
+    result["seconds"] = seconds
+    return result
