@@ -29,10 +29,10 @@ class DocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Document
         fields = (
-            'profile',
-            'type',
-            'name',
-            'certificate',
+            "profile",
+            "type",
+            "name",
+            "certificate",
         )
 
 
@@ -40,8 +40,8 @@ class SocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialMedia
         fields = (
-            'profile',
-            'link',
+            "profile",
+            "link",
         )
 
 
@@ -51,7 +51,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = (
-            'id',
+            "id",
             "user",
             "full_name",
             "position",
@@ -63,4 +63,19 @@ class ProfileSerializer(serializers.ModelSerializer):
             "birth_date",
             "score",
             "profile_documents",
+        )
+
+
+class ProfileCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = (
+            "full_name",
+            "position",
+            "JShShIR",
+            "study_center",
+            "passport_series",
+            "nationality",
+            "degree",
+            "birth_date",
         )

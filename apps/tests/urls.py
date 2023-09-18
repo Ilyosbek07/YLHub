@@ -1,5 +1,7 @@
 from django.urls import path
 
+from apps.tests.views import TestListAPIView
+
 urlpatterns = [
-    path()
+    path('course/<int:pk>/', TestListAPIView.as_view(), name='course_tests')
 ]

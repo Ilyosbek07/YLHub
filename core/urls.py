@@ -9,6 +9,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('course/', include('apps.course.urls')),
     path('users/', include('apps.users.urls')),
+    path('tests/', include('apps.tests.urls')),
 
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path("happenings/", include('apps.happenings.urls')),
