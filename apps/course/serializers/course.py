@@ -39,11 +39,13 @@ class CourseRetrieveSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "desc",
+            "expired_date",
             "duration_day",
             "score",
             "main_image",
             "course_lesson",
-            "lessons_count"
+            "lessons_count",
+            "is_optional"
         )
 
     def get_lessons_count(self, obj):
@@ -52,7 +54,7 @@ class CourseRetrieveSerializer(serializers.ModelSerializer):
 
 
 class UserCourseSerializer(serializers.ModelSerializer):
-    course = CourseSerializer()
+    course = CourseRetrieveSerializer()
 
     class Meta:
         model = UserCourse
@@ -69,9 +71,5 @@ class UserCourseSerializer(serializers.ModelSerializer):
             "end_time": {"read_only": True},
             "is_finish": {"read_only": True},
         }
-class UserCourseSubmitSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserCourse
-        fields = (
-            "course",
-        )
+
+

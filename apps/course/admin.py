@@ -37,9 +37,9 @@ admin.site.register(CourseCertificate, CourseCertificateAdmin)
 
 
 class CourseReviewAdmin(admin.ModelAdmin):
-    list_display = ["user_course", "comment", "rating"]
+    list_display = ["user", 'course', "comment", "rating"]
     list_filter = ["rating"]
-    search_fields = ["user_course__profile__user__username"]
+    search_fields = ["user_username"]
 
 
 admin.site.register(CourseReview, CourseReviewAdmin)

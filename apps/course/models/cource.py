@@ -1,4 +1,4 @@
-from django.core.validators import FileExtensionValidator
+from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.translation import gettext as _
 
@@ -66,11 +66,17 @@ class CourseCertificate(BaseModel):
 
 
 class CourseReview(BaseModel):
-    user_course = models.ForeignKey(
-        UserCourse, related_name="review", on_delete=models.CASCADE, verbose_name=_("User Course")
+    user = models.ForeignKey(
+        User, related_name="user_review", on_delete=models.CASCADE, verbose_name=_("User")
+    )
+    course = models.ForeignKey(
+        UserCourse, related_name="course_review", on_delete=models.CASCADE, verbose_name=_("Course")
     )
     comment = models.TextField(verbose_name=_("Comment"))
-    rating = models.PositiveIntegerField(validators=[], verbose_name=_("Rating"))
+    rating = models.PositiveIntegerField(validators=[
+        MinValueValidator(1),
+        MaxValueValidator(5)
+    ], verbose_name=_("Rating"))
 
     class Meta:
         verbose_name = _("Course Review")

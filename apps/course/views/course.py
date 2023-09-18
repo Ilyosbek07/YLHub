@@ -1,11 +1,17 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.response import Response
 
 from apps.course.filters import CourseFilter
-from apps.course.models import Course, UserCourse
+from apps.course.models import Course, UserCourse, Category
 from apps.course.serializers.course import CourseRetrieveSerializer, CourseSerializer, UserCourseSerializer, \
-    UserCourseSubmitSerializer
+    CategorySerializer
 from apps.users.models import User
+
+
+class CategoryListAPIView(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 
 class CourseListAPIView(generics.ListAPIView):
@@ -35,7 +41,12 @@ class UserCourseRetrieveAPIView(generics.RetrieveAPIView):
 
 class UserCourseCreateAPIView(generics.CreateAPIView):
     queryset = UserCourse.objects.all()
-    serializer_class = UserCourseSubmitSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def create(self, serializer, *args, **kwargs):
+        pk = self.kwargs.get('pk')
+        course = Course.objects.get(id=pk)
+        UserCourse.objects.create(
+            user=self.request.user,
+            course=course
+        )
+        return Response(status=status.HTTP_201_CREATED)
