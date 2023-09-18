@@ -96,7 +96,7 @@ class Profile(BaseModel):
     )
     degree = models.CharField(max_length=55, choices=DEGREE_CHOICES, verbose_name=_("Degree"))
     birth_date = models.DateField(verbose_name=_("Birth date"), null=True, blank=True)
-    score = models.IntegerField(verbose_name=_("Score"))
+    score = models.IntegerField(null=True, blank=True, verbose_name=_("Score"))
 
     class Meta:
         verbose_name = _("Profile")

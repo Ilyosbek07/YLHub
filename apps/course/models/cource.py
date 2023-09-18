@@ -27,7 +27,7 @@ class Course(BaseModel):
     expired_date = models.DateField(verbose_name=_("Expired Date"))
     score = models.IntegerField(verbose_name=_("Score"))
     main_image = models.ImageField(verbose_name=_("Main Image"))
-    is_optional = models.BooleanField(default=False, verbose_name=_('Is Optional'))
+    is_optional = models.BooleanField(default=False, verbose_name=_("Is Optional"))
 
     class Meta:
         verbose_name = _("Course")
@@ -38,9 +38,7 @@ class Course(BaseModel):
 
 
 class UserCourse(BaseModel):
-    user = models.ForeignKey(
-        User, related_name="profile_user_course", verbose_name=_("User"), on_delete=models.CASCADE
-    )
+    user = models.ForeignKey(User, related_name="profile_user_course", verbose_name=_("User"), on_delete=models.CASCADE)
     course = models.ForeignKey(Course, related_name="user_course", verbose_name=_("Course"), on_delete=models.CASCADE)
     start_time = models.DateField(auto_now_add=True)
     end_time = models.DateField(auto_now_add=True)

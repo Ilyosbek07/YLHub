@@ -3,7 +3,8 @@ from rest_framework import generics
 
 from apps.course.filters import CourseFilter
 from apps.course.models import Course, UserCourse
-from apps.course.serializers.course import CourseRetrieveSerializer, CourseSerializer, UserCourseSerializer
+from apps.course.serializers.course import CourseRetrieveSerializer, CourseSerializer, UserCourseSerializer, \
+    UserCourseSubmitSerializer
 from apps.users.models import User
 
 
@@ -30,3 +31,11 @@ class UserCourseListAPIView(generics.ListAPIView):
 class UserCourseRetrieveAPIView(generics.RetrieveAPIView):
     queryset = UserCourse.objects.all()
     serializer_class = UserCourseSerializer
+
+
+class UserCourseCreateAPIView(generics.CreateAPIView):
+    queryset = UserCourse.objects.all()
+    serializer_class = UserCourseSubmitSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

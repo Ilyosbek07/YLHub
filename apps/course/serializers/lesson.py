@@ -12,3 +12,16 @@ class LessonSerializer(serializers.ModelSerializer):
             "type",
             "order",
         )
+
+
+class LessonDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lesson
+        fields = (
+            'id',
+            "course",
+            "title",
+            "description",
+            "type",
+            "order",
+        )
