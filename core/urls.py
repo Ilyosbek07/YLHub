@@ -12,7 +12,8 @@ urlpatterns = [
 
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path("happenings/", include('apps.happenings.urls')),
-    path("webinar/", include('apps.webinar.urls'))
+    path("webinar/", include('apps.webinar.urls')),
+    path("library/", include('apps.library.urls'))
 ]
 
 urlpatterns += swagger_urlpatterns

@@ -9,3 +9,5 @@ django-filter
 django-ckeditor
 Pillow
 django-filter
+PyPDF2==3.0.1
+mutagen==1.47.0

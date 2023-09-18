@@ -83,14 +83,21 @@ class PollChoice(BaseModel):
 class UserPoll(BaseModel):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="polls", verbose_name=_("Profile"))
     choice = models.ForeignKey(
-        PollChoice, on_delete=models.CASCADE, related_name="users_choices", verbose_name="Choice"
+        PollChoice, on_delete=models.CASCADE, related_name="users_choices", verbose_name=_("Choice")
+    )
+    poll = models.ForeignKey(
+        Poll, on_delete=models.CASCADE, related_name="users_choices", verbose_name=_("Poll"), blank=True, null=True
     )
 
     class Meta:
         verbose_name = _("User Poll Choice")
         verbose_name_plural = _("User Poll Choices")
-        unique_together = ["profile", "choice"]
+        unique_together = ["profile", "poll"]
 
+    def save(self):
+        self.poll = self.choice.poll
+        return super().save()
+    
     def __str__(self):
         return f"{self.profile.__str__()}: {self.choice.__str__()}"
 
