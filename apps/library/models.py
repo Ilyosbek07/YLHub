@@ -123,6 +123,7 @@ class UserBookProgress(BaseModel):
         verbose_name = _("User Book Progress")
         verbose_name_plural = _("User Book Progresses")
         unique_together = ["book", "profile"]
+        ordering = ["-updated_at"]
 
     def save(self, *args, **kwargs):
         if not self.is_completed:
@@ -270,6 +271,7 @@ class UserAudiobookProgress(BaseModel):
         verbose_name = _("User audiobook progress")
         verbose_name_plural = _("User audiobook progresses")
         unique_together = ["profile", "audiobook"]
+        ordering = ["-updated_at"]
 
     def save(self, *args, **kwargs):
         section = self.audio_unit.section

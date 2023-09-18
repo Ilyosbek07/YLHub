@@ -1,18 +1,13 @@
 from django.urls import path
-from .views import (
-    BookListView,
-    BookDetailView,
-    BookFileView,
-    BookReadProgressUpdateView,
-    AudiobookListView,
-    AudiobookDetailView,
-    AudiobookFileView,
-    AudiobookListenProgressUpdateView,
-    PopularCategoriesView,
-    CategoryDetailView
-)
+from .views import (BookListView, BookDetailView,
+                    BookFileView, BookReadProgressUpdateView,
+                    AudiobookListView, AudiobookDetailView,
+                    AudiobookFileView, AudiobookListenProgressUpdateView,
+                    PopularCategoriesView, CategoryDetailView,
+                    LibraryListView, ViewedListView, RecommendedListView)
 
 urlpatterns = [
+    path("all/", LibraryListView.as_view(), name="ebook_audiobook_list"),
     path("ebooks/", BookListView.as_view(), name="ebook_list"),
     path("ebooks/<int:pk>", BookDetailView.as_view(), name="ebook_detail"),
     path("ebooks/file/<int:pk>/", BookFileView.as_view(), name="ebook_file"),
@@ -28,5 +23,7 @@ urlpatterns = [
         name="audiobook_progress_update" 
     ),
     path("categories/popular/", PopularCategoriesView.as_view(), name="popular_categories"),
-    path("categories/<int:pk>/", CategoryDetailView.as_view(), name="category_detail")
+    path("categories/<int:pk>/", CategoryDetailView.as_view(), name="category_detail"),
+    path("all/latest/", ViewedListView.as_view(), name="latest"),
+    path("all/recommended/", RecommendedListView.as_view(), name="recommended_list")
 ]

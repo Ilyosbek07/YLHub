@@ -29,3 +29,21 @@ def format_seconds(seconds):
     seconds %= 60
     result["seconds"] = seconds
     return result
+
+def merge_two_sorted_queries_list(list1, list2, is_dict=False):
+    result = []
+    if is_dict:
+        while list1 and list2:
+            if list1[0]["updated_at"] < list2[0]["updated_at"]:
+                result.append(list1.pop(0))
+            else:
+                result.append(list2.pop(0))
+    else:
+        while list1 and list2:
+            if list1[0].updated_at > list2[0].updated_at:
+                result.append(list1.pop(0))
+            else:
+                result.append(list2.pop(0))
+    if list1: result += list1
+    elif list2: result += list2
+    return result

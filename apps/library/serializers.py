@@ -42,8 +42,23 @@ class AudiobookListSerializer(serializers.ModelSerializer):
         return obj.duration // 60
 
 
-class AuthorSerializer(serializers.ModelSerializer):
+class AuthorWithBooksSerializer(serializers.ModelSerializer):
     books = BookListSerializer(many=True)
+
+    class Meta:
+        model = BookAuthor
+        fields = (
+            'id', 
+            'full_name', 
+            'birth_date', 
+            'country',
+            'about',
+            'avatar',
+            'books'
+        )
+
+
+class AuthorWithAudiobooksSerializer(serializers.ModelSerializer):
     audiobooks = AudiobookListSerializer(many=True)
 
     class Meta:
@@ -55,13 +70,12 @@ class AuthorSerializer(serializers.ModelSerializer):
             'country',
             'about',
             'avatar',
-            'books',
             'audiobooks'
         )
 
 
 class BookUnreadDetailSerializer(serializers.ModelSerializer):
-    author = AuthorSerializer()
+    author = serializers.SerializerMethodField()
     category = serializers.StringRelatedField()
 
     class Meta:
@@ -70,7 +84,6 @@ class BookUnreadDetailSerializer(serializers.ModelSerializer):
             'id',
             'title',
             'cover_image',
-            'author',
             'category',
             'publication_year',
             'is_required',
@@ -78,8 +91,16 @@ class BookUnreadDetailSerializer(serializers.ModelSerializer):
             'bonus_points',
             'language',
             'deadline',
-            'pages'
+            'pages',
+            'author'
         )
+
+    def get_author(self, obj):
+        author = obj.author
+        books = BookListSerializer(author.books.exclude(pk=obj.id), many=True)
+        author = AuthorWithAudiobooksSerializer(author).data
+        author["books"] = books.data
+        return author
 
 
 class BookReadInDetailSerializer(serializers.ModelSerializer):
@@ -130,7 +151,7 @@ class BookReadProgressSerializer(serializers.ModelSerializer):
 
 
 class AudiobookUnlistenedDetailSerializer(serializers.ModelSerializer):
-    author = AuthorSerializer()
+    author = serializers.SerializerMethodField()
     category = serializers.StringRelatedField()
     duration = serializers.SerializerMethodField()
 
@@ -152,6 +173,13 @@ class AudiobookUnlistenedDetailSerializer(serializers.ModelSerializer):
 
     def get_duration(self, obj):
         return format_seconds(obj.duration)
+    
+    def get_author(self, obj):
+        author = obj.author
+        audiobooks = AudiobookListSerializer(author.audiobooks.exclude(pk=obj.id), many=True)
+        author = AuthorWithBooksSerializer(author).data
+        author["audiobooks"] = audiobooks.data
+        return author
 
 
 class AudiobookListenedDetailSerializer(serializers.ModelSerializer):
@@ -260,3 +288,43 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
     def get_books_count(self, obj):
         return obj.books.count() + obj.audiobooks.count()
     
+
+class LibraryListSerializer(serializers.ModelSerializer):
+    pages = serializers.IntegerField()
+    duration = serializers.SerializerMethodField()
+    type = serializers.CharField()
+    author = serializers.StringRelatedField()
+
+    class Meta:
+        model = Book
+        fields = (
+            'id',
+            'title',
+            'author',
+            'cover_image',
+            'is_required',
+            'pages',
+            'duration',
+            'type'
+        )
+
+    def get_duration(self, obj):
+        return obj.duration // 60 if obj.duration else None
+
+
+class ViewedListSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField()
+    percentage = serializers.IntegerField()
+    type = serializers.CharField()
+
+    class Meta:
+        model = Book
+        fields = (
+            'id',
+            'title',
+            'author',
+            'cover_image',
+            'is_required',
+            'percentage',
+            'type'
+        )
